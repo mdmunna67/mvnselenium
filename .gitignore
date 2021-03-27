@@ -1,0 +1,11 @@
+target
+target/
+target/**
+ExtentReports/*.html
+Logs/Html/**
+Logs/Text/**
+ExternalDrivers/
+.DS_Store
+.project
+.settings
+Screenshots/**
