@@ -5,6 +5,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
+import com.selenium.base.AppConfig;
 import com.selenium.base.TestBase;
 import com.selenium.listeners.ExtentManager;
 import com.selenium.pages.MainPage;
@@ -13,6 +14,8 @@ import com.selenium.util.ReusableFunctions;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
+
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -27,9 +30,9 @@ public class MainPageTests extends TestBase {
     public static ExtentManager extManager = null;
     public static ExtentReports extent = null;
 
-    public static HashMap<String, HashMap<String, String>> tcData = DataReader.testDataMappedToTestName(prop.getProperty("TestDataExcelFileName"), prop.getProperty("TestDataSheetName"));
+    public static HashMap<String, HashMap<String, String>> tcData = DataReader.testDataMappedToTestName(AppConfig.getTestDataExcelFileName(), AppConfig.getTestDataSheetName());
 
-    public MainPageTests(){
+    public MainPageTests() throws IOException{
         super();
     }
 
@@ -102,16 +105,22 @@ public class MainPageTests extends TestBase {
             logger.skip(result.getThrowable());
 
         }else if(result.getStatus() == ITestResult.SUCCESS){
+        	String screenShotPath = ReusableFunctions.takeScreenShot(driver, "SeleniumTestScreen");
             logger.log(Status.PASS, MarkupHelper.createLabel(result.getName()+" Test case PASSED.", ExtentColor.GREEN));
+            logger.pass("Snapshot below: " + logger.addScreenCaptureFromPath(screenShotPath, testCaseName));
         }
 
         if (driver != null) {
-            driver.manage().deleteAllCookies();
-            driver.quit();
+            System.out.println("Closing the Browser");
+			System.out.println("*****************************************************");
+			driver.manage().deleteAllCookies();
+			driver.close();
+			driver.quit();
         }
     }
     @AfterTest
     public void tearDown(){
         extent.flush();
     }
+
 }

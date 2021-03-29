@@ -1,5 +1,6 @@
 package com.selenium.testdata;
 
+import com.selenium.base.AppConfig;
 import com.selenium.base.TestBase;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -10,12 +11,17 @@ import org.openqa.selenium.Platform;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class DataReader extends TestBase {
 
-    // Data Driven Testing Using "Test Case ID"
+    public DataReader() throws IOException {
+		super();
+	}
+
+	// Data Driven Testing Using "Test Case ID"
 
     public static XSSFWorkbook setExcelWorkbook(String testDataExcelFileName) {
         String testDataExcelPath = null;
@@ -26,7 +32,7 @@ public class DataReader extends TestBase {
             testDataExcelPath = System.getProperty("user.dir") + "\\src\\main\\resource\\";
         }else {
         	testDataExcelPath = System.getProperty("user.dir") + "//src//main//resource//";
-        	System.out.println("TestData path : "+testDataExcelPath);
+//        	System.out.println("TestData path : "+testDataExcelPath);
         }
 
         try {
@@ -140,8 +146,8 @@ public class DataReader extends TestBase {
             int totalRows = getRowCount(worksheet);
 
             // Get All Test Case with RunMode 'Y'
-            int TC_ID_Index = getColumnIndex(prop.getProperty("TCIDColumn"), worksheet);
-            int RunMode_Index = getColumnIndex(prop.getProperty("RunmodeColumn"), worksheet);
+            int TC_ID_Index = getColumnIndex(AppConfig.getTCIDColumn(), worksheet);
+            int RunMode_Index = getColumnIndex(AppConfig.getRunmodeColumn(), worksheet);
 
             for (int i = 1; i < totalRows; i++) {
                 String runModeValue = getCellData(i, RunMode_Index, worksheet);
@@ -208,7 +214,7 @@ public class DataReader extends TestBase {
     public static Boolean isRunnable(String testCaseName, HashMap<String, HashMap<String, String>> testData){
         Boolean flag = true;
         try{
-            String runmodeValue = testData.get(testCaseName).get(prop.getProperty("RunmodeColumn"));
+            String runmodeValue = testData.get(testCaseName).get(AppConfig.getRunmodeColumn());
 
             if (runmodeValue.equalsIgnoreCase("N")){
                 flag = false;

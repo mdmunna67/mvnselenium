@@ -1,0 +1,6 @@
+URL         = http://www.seleniumeasy.com/test/basic-first-form-demo.html
+BROWSER     = chrome || firefox || ie 
+EXCELNAME   = TestData.xlsx
+TDSHEETNAME = TC_Data
+GRIDURL     = http://127.0.0.1:4444/wd/hub
+HEADLESS    = true || false

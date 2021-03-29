@@ -1,6 +1,8 @@
 package com.selenium.util;
 
 import org.apache.commons.io.FileUtils;
+
+import com.selenium.base.AppConfig;
 import com.selenium.base.TestBase;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -20,14 +22,14 @@ public class ReusableFunctions extends TestBase {
 
     public int timeoutValue(){
         try{
-           timeout = Integer.parseInt(prop.getProperty("Timeout"));
+           timeout = Integer.parseInt(AppConfig.getTimeout());
         }catch (Exception Ex) {
             logger.error("Exception Occurred While Getting Timeout Property.");
         }
         return timeout;
     }
 
-    public boolean waitForElementPresent(WebDriver driver, By locator){
+    public boolean waitForElementPresentByLocator(WebDriver driver, By locator){
         WebDriverWait wait = new WebDriverWait(driver, timeoutValue());
         boolean flag = true;
         try{
@@ -39,7 +41,7 @@ public class ReusableFunctions extends TestBase {
         return flag;
     }
 
-    public boolean waitForElementPresent(WebDriver driver, WebElement element){
+    public boolean waitForElementPresentByElement(WebDriver driver, WebElement element){
         WebDriverWait wait = new WebDriverWait(driver, timeoutValue());
         boolean flag = true;
         try{
@@ -56,7 +58,7 @@ public class ReusableFunctions extends TestBase {
         try{
             for (By locator : arrayList){
                 WebElement element = driver.findElement(locator);
-                if (waitForElementPresent(driver, element)){
+                if (waitForElementPresentByElement(driver, element)){
                     logger.info(element.toString()+": element is displayed.");
                 }else{
                     logger.error(element.toString()+": element isn't displayed.");

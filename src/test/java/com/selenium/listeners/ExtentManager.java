@@ -32,7 +32,12 @@ public class ExtentManager {
             extent.attachReporter(htmlReporter);
             extent.setSystemInfo("Host Name", "Selenium Test Automation");
             extent.setSystemInfo("Environment", "QA Environment");
-            extent.setSystemInfo("User Name", "Abhilash Sharma");
+            extent.setSystemInfo("User Name", "Selenium");
+            extent.setSystemInfo("Project Name","Selenium Project");
+    		extent.setSystemInfo("Time Zone", System.getProperty("user.timezone"));
+    		extent.setSystemInfo("User Location", System.getProperty("user.country"));
+    		extent.setSystemInfo("OS version", System.getProperty("os.version"));
+    		extent.setSystemInfo("Java Version", System.getProperty("java.version"));
 
         }
         return extent;
