@@ -4,3 +4,11 @@ EXCELNAME   = TestData.xlsx
 TDSHEETNAME = TC_Data
 GRIDURL     = http://127.0.0.1:4444/wd/hub
 HEADLESS    = true || false
+
+
+mvn clean install -DHEADLESS=true
+
+[OR]
+
+mvn clean package -DskipTests 
+java -cp ".:./target/selenium.jar:./target/selenium-tests.jar:./target/libs/*" -DHEADLESS=true org.testng.TestNG testng.xml
