@@ -26,14 +26,17 @@ jobs:
         
     - name: Install Google Chrome # Using shell script to install Google Chrome
       run: |
-       chmod +x ./InstallChrome.sh
-        ./InstallChrome.sh
+       chmod +x ./InstallBrowsers.sh
+        ./InstallBrowsers.sh
         
     - name: check chrome version
       run: google-chrome --version
       
+    - name: check firefox version
+      run: firefox --version
+      
     - name: Build with Maven
-      run: mvn -DHEADLESS=true -B package --file pom.xml
+      run: mvn -DHEADLESS=true -DBROWSER=firefox -B package --file pom.xml
       
     - name: list files in ExtentReports dir
       run: cd ExtentReports && ls -al
