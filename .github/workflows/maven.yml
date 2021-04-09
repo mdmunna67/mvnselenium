@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Java CI with Maven
+name: Selenium Java CI with Maven
 
 on:
   push:
@@ -26,8 +26,14 @@ jobs:
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2    
-    - name: Build with Maven
-      run: mvn clean package -DskipTests #mvn -B package --file pom.xml
-    - name: list dir
-      run: cd target && ls -al
+        restore-keys: ${{ runner.os }}-m2  
+    - name: Install Google Chrome # Using shell script to install Google Chrome
+      run: |
+       chmod +x ./InstallChrome.sh
+        ./InstallChrome.sh
+    - name: check chrome version
+      run: google-chrome --version
+#     - name: Build with Maven
+#       run: mvn clean package -DskipTests #mvn -B package --file pom.xml
+#     - name: list dir
+#       run: cd target && ls -al
