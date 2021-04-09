@@ -115,8 +115,10 @@ public class TestBase {
 		    	firefoxBinary.addCommandLineOptions("--headless");
 		    	FirefoxOptions firefoxOptions = new FirefoxOptions();
 		    	firefoxOptions.setBinary(firefoxBinary);
+			driver = new FirefoxDriver(firefoxOptions);	
+			}else{
+			   driver = new FirefoxDriver();
 			}
-                        driver = new FirefoxDriver(firefoxOptions);
                         break;
                         
                     case "ie":
