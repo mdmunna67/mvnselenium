@@ -36,10 +36,9 @@ jobs:
       run: firefox --version
       
     - name: Build with Maven
-      run: |
-           mvn clean package -DskipTests
-           java -cp "./target/selenium-jar-with-dependencies.jar" -DHEADLESS=true org.testng.TestNG testng.xml
+      run: mvn clean package -DskipTests
+       
 #       run: mvn -DHEADLESS=true -DBROWSER=firefox -B package --file pom.xml
       
-    - name: list files in ExtentReports dir
-      run: cd ExtentReports && ls -al
+    - name: list files in target dir
+      run: cd target && ls -al
