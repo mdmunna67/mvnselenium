@@ -34,6 +34,6 @@ jobs:
     - name: check chrome version
       run: google-chrome --version
     - name: Build with Maven
-      run: mvn clean package -DskipTests #mvn -B package --file pom.xml
+      run: mvn -B package --file pom.xml
     - name: list files in ExtentReports dir
       run: cd ExtentReports && ls -al
