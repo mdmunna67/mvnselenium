@@ -107,8 +107,12 @@ public class TestBase {
                     case "firefox":
                         logger.info("Starting tests on firefox browser.");
 //                        System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "//ExternalDrivers//geckodriver.exe");
+			FirefoxBinary firefoxBinary = new FirefoxBinary();
+		    	firefoxBinary.addCommandLineOptions("--headless");
+		    	FirefoxOptions firefoxOptions = new FirefoxOptions();
+		    	firefoxOptions.setBinary(firefoxBinary);
                         WebDriverManager.firefoxdriver().setup();
-                        driver = new FirefoxDriver();
+                        driver = new FirefoxDriver(firefoxOptions);
                         break;
                         
                     case "ie":
