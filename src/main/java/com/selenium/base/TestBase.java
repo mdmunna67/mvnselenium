@@ -11,6 +11,8 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.firefox.FirefoxBinary;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import com.selenium.util.WaitHelper;
 
@@ -107,11 +109,13 @@ public class TestBase {
                     case "firefox":
                         logger.info("Starting tests on firefox browser.");
 //                        System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "//ExternalDrivers//geckodriver.exe");
+			WebDriverManager.firefoxdriver().setup();	
+			if(headless.equalsIgnoreCase("true")) {
 			FirefoxBinary firefoxBinary = new FirefoxBinary();
 		    	firefoxBinary.addCommandLineOptions("--headless");
 		    	FirefoxOptions firefoxOptions = new FirefoxOptions();
 		    	firefoxOptions.setBinary(firefoxBinary);
-                        WebDriverManager.firefoxdriver().setup();
+			}
                         driver = new FirefoxDriver(firefoxOptions);
                         break;
                         
