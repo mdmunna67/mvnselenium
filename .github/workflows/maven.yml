@@ -36,7 +36,9 @@ jobs:
       run: firefox --version
       
     - name: Build and Test with Maven
-      run: mvn -DHEADLESS=true -B package --file pom.xml
+      run: |
+            mvn -B package --file pom.xml
+            mvn test -DHEADLESS=true
       
 #     - name: run test using jar
 #       run: java -cp "./target/selenium-jar-with-dependencies.jar" -DHEADLESS=true org.testng.TestNG testng.xml
