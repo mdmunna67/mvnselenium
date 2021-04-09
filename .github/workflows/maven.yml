@@ -35,14 +35,8 @@ jobs:
     - name: check firefox version
       run: firefox --version
       
-    - name: Build and Test with Maven
-      run: |
-            mvn -B package --file pom.xml
-            mvn test -DHEADLESS=true
-      
-#     - name: run test using jar
-#       run: java -cp "./target/selenium-jar-with-dependencies.jar" -DHEADLESS=true org.testng.TestNG testng.xml
-# #       run: mvn -DHEADLESS=true -DBROWSER=firefox -B package --file pom.xml
+    - name: Build with Maven
+      run: mvn -DHEADLESS=true -DBROWSER=firefox -B package --file pom.xml
       
     - name: list files in ExtentReports dir
       run: cd ExtentReports && ls -al
