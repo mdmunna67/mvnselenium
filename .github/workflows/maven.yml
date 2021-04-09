@@ -36,7 +36,7 @@ jobs:
       run: firefox --version
       
     - name: Build with Maven
-      run: mvn -DHEADLESS=true -DBROWSER=firefox -B package --file pom.xml
+      run: mvn -DHEADLESS=true -B package --file pom.xml
       
     - name: list files in ExtentReports dir
       run: cd ExtentReports && ls -al
