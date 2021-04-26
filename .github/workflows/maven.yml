@@ -40,3 +40,9 @@ jobs:
       
     - name: list files in ExtentReports dir
       run: cd ExtentReports && ls -al
+    
+    - name: Deploy report page to GitHub Page
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.TOKEN }}
+        publish_dir: ./ExtentReports
