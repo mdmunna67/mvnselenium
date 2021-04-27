@@ -45,9 +45,10 @@ jobs:
     - name: return to root dir
       run: cd ..
     
-    - name: Deploy report page to GitHub Page
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@4.1.1
       with:
         github_token: ${{ secrets.TOKEN }}
-        publish_dir: ./ExtentReports/
+        branch: gh-pages # The branch the action should deploy to.
+        folder: ExtentReports # The folder the action should deploy.
 
