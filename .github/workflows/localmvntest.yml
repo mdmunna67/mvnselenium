@@ -1,4 +1,4 @@
-name: Selenium Java CI with Maven
+name: Selenium Project-localmvntest
 
 on:
   push:
@@ -36,13 +36,17 @@ jobs:
       run: firefox --version
       
     - name: Build with Maven
-      run: mvn -DHEADLESS=true -B package --file pom.xml
+      run: mvn -DENV=local -DBROWSER=chrome -DHEADLESS=true clean install --file pom.xml
+#       mvn -DENV=local -DBROWSER=chrome -DHEADLESS=true -B package --file pom.xml
       
     - name: list files in ExtentReports dir
       run: cd ExtentReports && ls -al
+      
+    - name: return to root dir
+      run: cd ..
     
     - name: Deploy report page to GitHub Page
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.TOKEN }}
-        publish_dir: ./
+        publish_dir: ./ExtentReports
