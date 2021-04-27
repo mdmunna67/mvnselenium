@@ -50,6 +50,6 @@ jobs:
       with:
         github_token: ${{ secrets.TOKEN }}
         publish_dir: ./ExtentReports
-        exclude_assets: '.nojekyll,Readme.md'
+        exclude_assets: 'Readme.md,Screenshots'
         disable_nojekyll: true
         
