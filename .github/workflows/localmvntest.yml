@@ -39,9 +39,12 @@ jobs:
       run: mvn -DENV=local -DBROWSER=chrome -DHEADLESS=true clean install --file pom.xml
 #       mvn -DENV=local -DBROWSER=chrome -DHEADLESS=true -B package --file pom.xml
       
+    - name: change file name
+      run: mv ./ExtentReports/ExtentReportResults*.html ./ExtentReports/index.html
+
     - name: list files in ExtentReports dir
-      run: cd ExtentReports && ls -al
-      
+      run: cd ExtentReports && ls -al 
+  
     - name: return to root dir
       run: cd ..
     
@@ -50,6 +53,6 @@ jobs:
       with:
         github_token: ${{ secrets.TOKEN }}
         publish_dir: ./ExtentReports
-        exclude_assets: 'Readme.md,Screenshots'
-        disable_nojekyll: false
+        exclude_assets: 'Readme.md'
+        disable_nojekyll: true
         
