@@ -1,14 +1,45 @@
 URL         = http://www.seleniumeasy.com/test/basic-first-form-demo.html
-BROWSER     = chrome || firefox || ie 
+BROWSER     = chrome || firefox 
 EXCELNAME   = TestData.xlsx
 TDSHEETNAME = TC_Data
-GRIDURL     = http://127.0.0.1:4444/wd/hub
+GRIDURL     = http://hub:4444/wd/hub 
 HEADLESS    = true || false
+ENV         = grid || local
 
 
-mvn clean install -DHEADLESS=true
+mvn clean install -DENV=local -DBROWSER=chrome -DHEADLESS=true -DURL=https://www.google.com
+
+mvn clean install -DENV=grid -DBROWSER=chrome -DGRIDURL=http://hub:4444/wd/hub -DURL=https://www.google.com
+
+*********************************************AWS ECR STEPS******************************************************
+cat ~/.aws/credentials
+[default]
+aws_access_key_id = XXXXXXXXXXXXXXXXXXXXXXXXX
+aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXX
+
+To create ECR repository : 
+aws ecr create-repository --repository-name <repo-name> --region <region>
+
+To Login ECR: 
+aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<region>.amazonaws.com
+
+To pull ECR image:
+docker pull <aws_account_id>.dkr.ecr.<region>.amazonaws.com/<repo-name>:<tag>
+
+******************************************************************************************************************
 
 [OR]
 
 mvn clean package -DskipTests 
 java -cp ".:./target/selenium.jar:./target/selenium-tests.jar:./target/libs/*" -DHEADLESS=true org.testng.TestNG testng.xml
+
+
+java -cp container-test.jar:libs/* -DBROWSER=chrome -DGRIDURL=http://localhost:4444/wd/hub -DHEADLESS=true -DENV=grid org.testng.TestNG testng.xml
+docker run -it --network=seleniumjavaweb_default <> mvn clean install -DBROWSER=chrome -DGRIDURL=http://localhost:4444/wd/hub -DHEADLESS=true -DENV=grid
+
+******************************************GH-Actions**************************************************************
+
+docker-compose --env-file ./.env.test up -d hub chrome firefox
+docker-compose --env-file ./.env.test up test
+
+docker login -u <repo acc name> -p <TOKEN> docker.pkg.github.com | docker pull docker.pkg.github.com/myreact67/selenium-web-dev/selenium:latest

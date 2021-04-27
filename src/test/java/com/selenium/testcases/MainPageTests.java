@@ -98,6 +98,8 @@ public class MainPageTests extends TestBase {
             String screenShotPath = ReusableFunctions.takeScreenShot(driver, "SeleniumTestScreen");
             logger.log(Status.FAIL, MarkupHelper.createLabel(result.getName()+" Test case FAILED due to below issues:", ExtentColor.RED));
             logger.fail(result.getThrowable());
+            screenShotPath = screenShotPath.replaceAll("ExtentReports/", "");
+            System.out.println("Screenshot path :"+screenShotPath);
             logger.fail("Snapshot below: " + logger.addScreenCaptureFromPath(screenShotPath, testCaseName));
 
         }else if(result.getStatus() == ITestResult.SKIP){
@@ -107,6 +109,8 @@ public class MainPageTests extends TestBase {
         }else if(result.getStatus() == ITestResult.SUCCESS){
         	String screenShotPath = ReusableFunctions.takeScreenShot(driver, "SeleniumTestScreen");
             logger.log(Status.PASS, MarkupHelper.createLabel(result.getName()+" Test case PASSED.", ExtentColor.GREEN));
+            screenShotPath = screenShotPath.replaceAll("ExtentReports/", "");
+            System.out.println("Screenshot path :"+screenShotPath);
             logger.pass("Snapshot below: " + logger.addScreenCaptureFromPath(screenShotPath, testCaseName));
         }
 
@@ -114,7 +118,6 @@ public class MainPageTests extends TestBase {
             System.out.println("Closing the Browser");
 			System.out.println("*****************************************************");
 			driver.manage().deleteAllCookies();
-			driver.close();
 			driver.quit();
         }
     }

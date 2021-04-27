@@ -1,0 +1,43 @@
+version: "3"
+services:
+  hub:
+    image: selenium/hub
+    ports:
+      - "4444:4444"
+    # environment:
+    #   - GRID_MAX_SESSION=10
+  chrome:
+    image: selenium/node-chrome     
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=hub
+      # - NODE_MAX_INSTANCES=3
+      # - NODE_MAX_SESSION=3
+    volumes:
+      - /dev/shm:/dev/shm
+  firefox:
+    image: selenium/node-firefox
+    shm_size: '1gb'   
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=hub
+      # - NODE_MAX_INSTANCES=3
+      # - NODE_MAX_SESSION=3
+    # volumes:
+    #   - ./downloads:/home/seluser/Downloads
+  test:
+    image: docker.pkg.github.com/myreact67/selenium-web-dev/selenium:latest
+    entrypoint: ./healthcheck.sh
+    depends_on:
+      - chrome
+      - firefox
+    env_file:
+      - ./.env.test
+    environment:
+      - BROWSER=${BROWSER}
+      - ENV=${ENV}
+      - GRIDURL=${GRIDURL}
+    volumes:
+      - ./ExtentReports:/usr/share/selmvn/ExtentReports

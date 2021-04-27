@@ -139,12 +139,12 @@ public class ReusableFunctions extends TestBase {
             String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
             TakesScreenshot ts = (TakesScreenshot) driver;
             File source = ts.getScreenshotAs(OutputType.FILE);
-
-            destination = System.getProperty("user.dir") + "/Screenshots/"+screenshotName+dateName+".png";
+//            System.getProperty("user.dir") + 
+            destination = "ExtentReports/Screenshots/"+screenshotName+dateName+".png";
             File finalDestination = new File(destination);
             FileUtils.copyFile(source, finalDestination);
 
-            destination = finalDestination.getAbsolutePath();
+//            destination = finalDestination.getAbsolutePath();
             logger.info("Saving screenshot to failed repo: " + destination);
 
         }catch (Exception Ex){

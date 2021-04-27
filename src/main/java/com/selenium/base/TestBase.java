@@ -1,32 +1,26 @@
 package com.selenium.base;
 
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.firefox.FirefoxBinary;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 import com.selenium.util.WaitHelper;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 public class TestBase {
 
@@ -39,22 +33,6 @@ public class TestBase {
         System.setProperty("current.date", dateFormat.format(new Date()));
     }
 
-//    public TestBase() {
-//        try {
-//            prop = new Properties();
-//            FileInputStream inputStream = new FileInputStream(System.getProperty("user.dir") + "/src/main/java/com/selenium/config/config.properties");
-//            prop.load(inputStream);
-//
-//            PropertyConfigurator.configure(System.getProperty("user.dir") + "/src/main/resource/log4j.properties");
-//            logger = Logger.getLogger(TestBase.class.getName());
-//
-//        } catch (FileNotFoundException Ex) {
-//            logger.info("File not found: " + Ex.getMessage());
-//
-//        } catch (IOException Ex) {
-//            logger.info("Exception occurred: " + Ex.getMessage());
-//        }
-//    }
     
     public TestBase() {
         PropertyConfigurator.configure(System.getProperty("user.dir") + "/src/main/resource/log4j.properties");
@@ -71,7 +49,7 @@ public class TestBase {
         if(headless!=null) {
         	headless = System.getProperty("HEADLESS");
         }else {
-        	headless = "false";
+        	headless = "true";
         }
     	
     	System.out.println("*******************Start:System Args**********************");
@@ -80,15 +58,14 @@ public class TestBase {
     	System.out.println("URL :"+URL);
     	System.out.println("HEADLESS :"+headless);
     	System.out.println("********************End:System Args***********************");
-    	
-    	
+    
+        
         switch (environment) {
         
             case "local":
                 switch (browserName) {
                     case "chrome":
                         logger.info("Starting tests on chrome browser.");
-//                        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "//ExternalDrivers//chromedriver");
                         WebDriverManager.chromedriver().setup();
                         ChromeOptions options = new ChromeOptions();
                         if(headless.equalsIgnoreCase("true")) {
@@ -108,22 +85,12 @@ public class TestBase {
 
                     case "firefox":
                         logger.info("Starting tests on firefox browser.");
-//                        System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "//ExternalDrivers//geckodriver.exe");
-			WebDriverManager.firefoxdriver().setup();	
-			if(headless.equalsIgnoreCase("true")) {
-			FirefoxBinary firefoxBinary = new FirefoxBinary();
-		    	firefoxBinary.addCommandLineOptions("--headless");
-		    	FirefoxOptions firefoxOptions = new FirefoxOptions();
-		    	firefoxOptions.setBinary(firefoxBinary);
-			driver = new FirefoxDriver(firefoxOptions);	
-			}else{
-			   driver = new FirefoxDriver();
-			}
+                        WebDriverManager.firefoxdriver().setup();
+                        driver = new FirefoxDriver();
                         break;
                         
                     case "ie":
                     	logger.info("Starting tests on IE browser.");
-//                    	System.setProperty("webdriver.ie.driver",System.getProperty("user.dir")+"/drivers/IEDriverServer340X32bit.exe");
                     	WebDriverManager.iedriver().setup();
         				InternetExplorerOptions opt = new InternetExplorerOptions();
         				opt.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
@@ -149,23 +116,35 @@ public class TestBase {
             case "grid":
                 switch (browserName) {
                     case "chrome":
-                        logger.info("Starting tests on chrome browser.");
+                        logger.info("Grid:Starting tests on chrome browser.");
                         ChromeOptions options = new ChromeOptions();
                         options.addArguments("--start-maximized");
                         options.addArguments("--disable-extensions");
                         options.setCapability("platform", "LINUX");
                         driver = new RemoteWebDriver(new URL(AppConfig.getGridServer()), options);
-                        logger.info("Setting Up Selenium Grid.");
+                        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+                        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+                        logger.info("Grid:Setting Up Selenium Grid.");
                         break;
 
                     case "firefox":
-                        logger.info("Starting tests on firefox browser.");
-                        System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "//ExternalDrivers//geckodriver.exe");
-                        driver = new FirefoxDriver();
+                        logger.info("Grid:Starting tests on firefox browser.");
+                        FirefoxOptions FFoptions = new FirefoxOptions();
+                        driver = new RemoteWebDriver(new URL(AppConfig.getGridServer()), FFoptions);   
+                        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+                        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
                         break;
+                     
+                    case "ie":
+                       logger.info("Grid:Starting tests on ie browser.");
+                       InternetExplorerOptions ieoptions = new InternetExplorerOptions();
+                       driver = new RemoteWebDriver(new URL(AppConfig.getGridServer()), ieoptions);   
+                       driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+                       driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+                       break;
 
                     default:
-                        logger.info("Browser not defined.");
+                        logger.info("Browser is not defined, Not able to set Driver object.");
                         break;
                 }
                 break;

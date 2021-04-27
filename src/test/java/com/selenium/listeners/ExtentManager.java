@@ -1,13 +1,13 @@
 package com.selenium.listeners;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import com.selenium.base.AppConfig;
 
 //OB: ExtentReports extent instance created here. That instance can be reachable by getReporter() method.
 
@@ -30,14 +30,17 @@ public class ExtentManager {
 
             extent = new ExtentReports();
             extent.attachReporter(htmlReporter);
-            extent.setSystemInfo("Host Name", "Selenium Test Automation");
-            extent.setSystemInfo("Environment", "QA Environment");
-            extent.setSystemInfo("User Name", "Selenium");
+//            extent.setSystemInfo("Host Name", "Selenium Test Automation");
+//            extent.setSystemInfo("Environment", "QA Environment");
+//            extent.setSystemInfo("User Name", "Selenium");
             extent.setSystemInfo("Project Name","Selenium Project");
-    		extent.setSystemInfo("Time Zone", System.getProperty("user.timezone"));
-    		extent.setSystemInfo("User Location", System.getProperty("user.country"));
+    		extent.setSystemInfo("OS", System.getProperty("os.name"));
     		extent.setSystemInfo("OS version", System.getProperty("os.version"));
     		extent.setSystemInfo("Java Version", System.getProperty("java.version"));
+            extent.setSystemInfo("Browser", AppConfig.getBrowser());
+            extent.setSystemInfo("Run Mode", AppConfig.getEnvironment());
+            extent.setSystemInfo("Time Zone", System.getProperty("user.timezone"));
+    		extent.setSystemInfo("User Location", System.getProperty("user.country"));
 
         }
         return extent;

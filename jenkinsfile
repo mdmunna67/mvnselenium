@@ -1,0 +1,84 @@
+pipeline {
+    environment {
+        imagename = "sel-automation-fw"
+        dockerImage = ''
+
+    }
+
+    agent any
+
+    // agent {
+    //     node {
+    //         label 'docker' && 'maven'
+    //     }
+    // }
+    
+    stages {
+        stage ("clean up") {
+            steps {
+                echo "${workspace}"
+                  /* clean up our workspace */
+                deleteDir()
+                /* clean up tmp directory */
+                dir("${workspace}@tmp") {
+                    deleteDir()
+                }
+            }
+        }
+        
+        stage ("Checkout") {
+            steps {
+                  // cleanWs deleteDirs: true, notFailBuild: true
+                // git 'https://myreact67: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@github.com/myreact67/selenium-web-dev.git'
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://<>@github.com/myreact67/selenium-web-dev.git']]])
+                
+            }
+        }
+        
+        stage('Build Image') {
+            steps {
+                script {
+                // 	app = docker.build("sel-automation-fw")
+                def testImage = docker.build("sel-automation-fw", "${workspace}/Dockerfile")
+                }
+            }
+        }
+        
+        
+        // stage ("Run Grid") {
+        //     steps {
+        //          script {
+
+        //             // def workspace = "${WORKSPACE}"
+        //             // echo workspace
+        //             def newFile = new File("${WORKSPACE}/.env.test")
+        //             newFile.createNewFile() 
+                    
+        //             def readContent = readFile "${WORKSPACE}/.env.test"
+                    
+        //             writeFile file: "${WORKSPACE}/.env.test", text: readContent +"BROWSER=${BROWSER}\r\nENV=${ENV}\r\nURL=${URL}\r\nEXCELNAME=${EXCELNAME}\r\nTDSHEETNAME=${TDSHEETNAME}\r\n"
+                    
+        //             }
+                 
+        //          sh 'docker-compose --env-file ./.env.test up -d hub chrome firefox'
+        //     }
+        // }
+        
+        // stage ("Run Test") {
+        //     steps {
+        //         echo "${workspace}"
+        //          sh 'docker-compose --env-file ./.env.test up test'
+        //     }
+        // }
+    }
+    // post {
+    //     always{
+    // 	    archiveArtifacts artifacts: 'ExtentReports/** , Screenshots/**'
+    // 		sh 'docker-compose down'
+    // 		sh 'docker rmi -f sel-automation-fw'
+    // 		findText(textFinders: [textFinder(alsoCheckConsoleOutput: true, regexp: 'BUILD FAILURE')])
+    //         // zip zipFile: 'Report.zip', archive: false, dir: 'DockerOutput'
+    //         // slackUploadFile channel: 'automation', credentialId: 'slackupload', filePath: 'Report.zip', initialComment: 'Results'
+    // 	}
+    // }
+}

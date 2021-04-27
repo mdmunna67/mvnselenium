@@ -14,7 +14,7 @@ public class AppConfig
 	public static String getEnvironment() 
 	{
 		String Env = System.getProperty("ENV");
-		if(Env!=null) {
+		if(Env!="") {
 			return Env;
 		}else {
 			try
@@ -34,28 +34,27 @@ public class AppConfig
 	
 	public static String getURL() 
 	{
-		String URL = System.getProperty("URL");
-		if(URL!=null) {
-			return URL;
-		}else {
+//		String URL = System.getProperty("URL");
+//		if(URL!="") {
+//			return URL;
+//		}else {
 			try
-			{
-				fis = new FileInputStream(appFile);
-				prop = new Properties();
-				prop.load(fis);
-				
-				return prop.getProperty("Url");
-			}
-			catch(Exception e){ e.printStackTrace();}
-			return null;
-		}
-		
+				{
+					fis = new FileInputStream(appFile);
+					prop = new Properties();
+					prop.load(fis);
+					
+					return prop.getProperty("URL");
+				}
+				catch(Exception e){ e.printStackTrace();}
+				return null;
+//		}
 	}
 	
 	public static String getBrowser() 
 	{
 		String Browser = System.getProperty("BROWSER");
-		if(Browser!=null) {
+		if(Browser!="") {
 			return Browser;
 		}else {
 			try
@@ -73,10 +72,6 @@ public class AppConfig
 	
 	public static String getTestDataExcelFileName() 
 	{
-		String TestDataExcelFileName = System.getProperty("EXCELNAME");
-		if(TestDataExcelFileName!=null) {
-			return TestDataExcelFileName;
-		}else {
 			try
 			{
 				fis = new FileInputStream(appFile);
@@ -87,7 +82,6 @@ public class AppConfig
 			}
 			catch(Exception e){ e.printStackTrace();}
 			return null;
-		}
 	}
 	
 	public static String getRunModeSheetName() 
@@ -106,11 +100,7 @@ public class AppConfig
 	
 	public static String getTestDataSheetName()
 	{
-		String TDSHEETNAME = System.getProperty("TDSHEETNAME");
-		if(TDSHEETNAME!=null) {
-			return TDSHEETNAME;
-		}else {
-			try
+		try
 			{
 				fis = new FileInputStream(appFile);
 				prop = new Properties();
@@ -120,14 +110,13 @@ public class AppConfig
 			}
 			catch(Exception e){ e.printStackTrace();}
 			return null;
-		}
 	}
 	
 	
 	public static String getGridServer() 
 	{
 		String GRIDURL = System.getProperty("GRIDURL");
-		if(GRIDURL!=null) {
+		if(GRIDURL!="") {
 			return GRIDURL;
 		}else {
 			try
