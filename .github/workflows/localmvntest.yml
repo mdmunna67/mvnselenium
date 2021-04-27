@@ -45,10 +45,10 @@ jobs:
     - name: return to root dir
       run: cd ..
     
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@4.1.1
+    - name: Deploy report page to GitHub Page
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        token: ${{ secrets.TOKEN }}
-        branch: gh-pages # The branch the action should deploy to.
-        folder: ExtentReports # The folder the action should deploy.
+        github_token: ${{ secrets.TOKEN }}
+        publish_dir: ExtentReports
+        exclude_assets: '.github,.nojekyll,Readme.md'
         
