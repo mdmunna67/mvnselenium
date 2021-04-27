@@ -49,6 +49,7 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.TOKEN }}
-        publish_dir: ExtentReports
-        exclude_assets: '.github,.nojekyll,Readme.md'
+        publish_dir: ./ExtentReports
+        exclude_assets: '.nojekyll,Readme.md'
+        enable_jekyll: false
         
