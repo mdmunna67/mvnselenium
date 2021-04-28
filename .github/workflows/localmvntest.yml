@@ -43,9 +43,16 @@ jobs:
       
     - name: get hostname
       run: echo $hostname
-      
-    - name: Build with Maven
+    
+    - name: Maven Build and Test (default)
       run: mvn -DENV=local -DBROWSER=${{github.event.inputs.browser}} -DHEADLESS=true --file pom.xml clean install
+      if: github.event.inputs.browser == ''
+      
+    - name: Maven Build and Test (workflow-input)
+      run: mvn -DENV=local -DBROWSER=${{github.event.inputs.browser}} -DHEADLESS=true --file pom.xml clean install
+      if: github.event.inputs.browser != ''
+#       with:
+#         ref: ${{github.event.inputs.browser}}
 #       mvn -DENV=local -DBROWSER=chrome -DHEADLESS=true -B package --file pom.xml
       
     - name: change file name
