@@ -86,7 +86,9 @@ public class TestBase {
                     case "firefox":
                         logger.info("Starting tests on firefox browser.");
                         WebDriverManager.firefoxdriver().setup();
-                        driver = new FirefoxDriver();
+                        FirefoxOptions FFoptions = new FirefoxOptions();
+                        FFoptions.setHeadless(true);
+                        driver = new FirefoxDriver(FFoptions);
                         break;
                         
                     case "ie":
