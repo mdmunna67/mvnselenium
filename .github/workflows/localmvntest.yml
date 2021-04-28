@@ -7,8 +7,8 @@ on:
         description: Browser [ chrome | firefox ]
         required: true
         
-#   push:
-#     branches: [ main ]
+  push:
+    branches: [ main ]
 
 jobs:
   build:
@@ -56,6 +56,7 @@ jobs:
   
     - name: return to root dir
       run: cd ..
+
     
     - name: Deploy report page to GitHub Page
       uses: peaceiris/actions-gh-pages@v3
@@ -64,4 +65,18 @@ jobs:
         publish_dir: ./ExtentReports
         exclude_assets: 'Readme.md'
         disable_nojekyll: true
+    
+    #       https://mdmunna67.github.io/mvnselenium/
+    - name: Slack Notification
+      uses: lazy-actions/slatify@master
+      if: always()
+      with:
+          type: ${{ job.status }}
+          job_name: 'Selenium mvn test - [https://mdmunna67.github.io/mvnselenium/] :rocket:'
+          mention: 'here'
+          mention_if: 'failure'
+          channel: '#gh'
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          commit: true
+          token: ${{ secrets.TOKEN }}
         
