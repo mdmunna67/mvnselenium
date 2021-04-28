@@ -1,8 +1,14 @@
 name: Selenium Project-localmvntest
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: Browser [ chrome | firefox ]
+        required: true
+        
+#   push:
+#     branches: [ main ]
 
 jobs:
   build:
@@ -35,8 +41,11 @@ jobs:
     - name: check firefox version
       run: firefox --version
       
+    - name: get hostname
+      run: echo $hostname
+      
     - name: Build with Maven
-      run: mvn -DENV=local -DBROWSER=chrome -DHEADLESS=true clean install --file pom.xml
+      run: mvn -DENV=local -DBROWSER=${{github.event.inputs.browser}} -DHEADLESS=true --file pom.xml clean install
 #       mvn -DENV=local -DBROWSER=chrome -DHEADLESS=true -B package --file pom.xml
       
     - name: change file name
