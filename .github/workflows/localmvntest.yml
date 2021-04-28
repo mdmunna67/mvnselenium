@@ -45,7 +45,7 @@ jobs:
       run: echo $hostname
     
     - name: Maven Build and Test (default)
-      run: mvn -DENV=local -DBROWSER=${{github.event.inputs.browser}} -DHEADLESS=true --file pom.xml clean install
+      run: mvn -DENV=local -DBROWSER=chrome -DHEADLESS=true --file pom.xml clean install
       if: github.event.inputs.browser == ''
       
     - name: Maven Build and Test (workflow-input)
